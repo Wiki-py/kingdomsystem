@@ -2,6 +2,9 @@ from django.urls import path
 from . import views
 from . import concurrent_utils
 
+# Custom 404 handler
+handler404 = 'surveys.views.custom_404'
+
 app_name = 'surveys'
 
 urlpatterns = [
