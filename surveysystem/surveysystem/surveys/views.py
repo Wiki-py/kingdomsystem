@@ -16,6 +16,14 @@ from .models import Survey, Question, SurveyResponse, Answer, Clan, SubClan
 import json
 
 
+def custom_404(request, exception):
+    """Custom 404 error handler"""
+    return render(request, 'surveys/404.html', status=404, context={
+        'exception': exception,
+        'error_message': str(exception),
+    })
+
+
 def welcome_view(request):
     """Welcome screen with terms acceptance"""
     if request.method == 'POST':

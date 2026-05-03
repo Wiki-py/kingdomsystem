@@ -27,3 +27,7 @@ urlpatterns = [
     path('accounts/login/', RoleBasedLoginView.as_view(template_name='registration/login.html'), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(next_page='surveys:welcome', template_name='registration/logged_out.html'), name='logout'),
 ]
+
+# Custom error handlers for production
+handler404 = 'surveys.views.custom_404'
+handler500 = 'surveys.views.custom_404'  # Use same handler for 500 errors

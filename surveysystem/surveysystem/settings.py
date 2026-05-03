@@ -24,7 +24,7 @@ import os
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-!lxg*-w4^-(_dm@-mpa=l@+giv**=bev_x0rta_*eqz48xq_37')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,kss-1-eja4.onrender.com,kingdomsystem.onrender.com').split(',')
 

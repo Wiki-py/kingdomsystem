@@ -1,0 +1,124 @@
+{% extends 'surveys/base.html' %}
+{% load static %}
+
+{% block title %}Page Not Found - OBB Survey System{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-gradient text-white text-center py-4">
+                    <div class="mb-3">
+                        <i class="bi bi-exclamation-triangle display-1"></i>
+                    </div>
+                    <h3 class="mb-0">404</h3>
+                    <p class="mb-0">Page Not Found</p>
+                </div>
+                <div class="card-body p-4 text-center">
+                    <div class="mb-4">
+                        <i class="bi bi-search display-4 text-muted"></i>
+                    </div>
+                    <h4 class="mb-3">Oops! Page Not Found</h4>
+                    <p class="text-muted mb-4">
+                        The page you're looking for doesn't exist or has been moved.
+                    </p>
+                    
+                    <div class="alert alert-info mb-4">
+                        <h5 class="alert-heading">
+                            <i class="bi bi-info-circle me-2"></i>
+                            What can you do?
+                        </h5>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="d-grid gap-2">
+                                    <a href="{% url 'surveys:survey_list' %}" class="btn btn-outline-primary">
+                                        <i class="bi bi-list-ul me-2"></i>
+                                        Survey Dashboard
+                                    </a>
+                                    <a href="{% url 'surveys:welcome' %}" class="btn btn-outline-success">
+                                        <i class="bi bi-house-door me-2"></i>
+                                        Home
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="d-grid gap-2">
+                                    {% if user.is_authenticated %}
+                                        <a href="{% url 'surveys:create_survey' %}" class="btn btn-outline-warning">
+                                            <i class="bi bi-plus-circle me-2"></i>
+                                            Create Survey
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <p class="text-muted">
+                            <small>
+                                <i class="bi bi-shield-check me-1"></i>
+                                If you believe this is an error, please contact the system administrator.
+                            </small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+.bg-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.border-0 {
+    border: none !important;
+}
+
+.card {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.card-header {
+    border-bottom: none;
+}
+
+.btn {
+    border-radius: 25px;
+    padding: 12px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.display-1 {
+    font-size: 3rem;
+}
+
+.display-4 {
+    font-size: 4rem;
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+</style>
+{% endblock %}
