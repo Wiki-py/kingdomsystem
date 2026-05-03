@@ -2,15 +2,14 @@
   "name": "OBB Baseline Survey System",
   "short_name": "OBB Survey",
   "description": "OBB Kingdom baseline survey system for data collection and analysis with offline capabilities",
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#dc2626",
   "orientation": "portrait-primary",
-  "scope": ".",
+  "scope": "/",
   "lang": "en",
   "categories": ["business", "utilities", "productivity"],
-  "offline_enabled": true,
   "prefer_related_applications": false,
   "icons": [
     {
