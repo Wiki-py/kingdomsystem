@@ -128,7 +128,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
-    BASE_DIR / 'surveys/static',
+    BASE_DIR / 'surveysystem/surveys/static',
 ]
 
 LOGIN_REDIRECT_URL = '/surveys/'
