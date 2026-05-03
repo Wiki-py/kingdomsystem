@@ -16,6 +16,38 @@ from .models import Survey, Question, SurveyResponse, Answer, Clan, SubClan
 import json
 
 
+def welcome_view(request):
+    """Welcome screen with terms acceptance"""
+    if request.method == 'POST':
+        # Mark that user has accepted terms
+        request.session['terms_accepted'] = True
+        request.session['terms_accepted_time'] = timezone.now().isoformat()
+        
+        # Redirect to appropriate page based on authentication
+        if request.user.is_authenticated:
+            return redirect('surveys:survey_list')
+        else:
+            return redirect('login')
+    
+    # Check if terms already accepted
+    if request.session.get('terms_accepted'):
+        if request.user.is_authenticated:
+            return redirect('surveys:survey_list')
+        else:
+            return redirect('login')
+    
+    return render(request, 'surveys/welcome.html')
+
+
+def check_terms_accepted(view_func):
+    """Decorator to check if terms have been accepted"""
+    def wrapper(request, *args, **kwargs):
+        if not request.session.get('terms_accepted'):
+            return redirect('surveys:welcome')
+        return view_func(request, *args, **kwargs)
+    return wrapper
+
+
 def is_admin(user):
     """Check if user is admin (staff)"""
     return user.is_staff
@@ -1023,6 +1055,10 @@ class RoleBasedLoginView(auth_views.LoginView):
     """Custom login view that redirects users based on their role"""
     
     def get_success_url(self):
+        # Check if terms have been accepted
+        if not self.request.session.get('terms_accepted'):
+            return reverse('surveys:welcome')
+        
         user = self.request.user
         if user.is_superuser:
             return '/admin-dashboard/super-admin/'
@@ -1037,6 +1073,7 @@ class RoleBasedLoginView(auth_views.LoginView):
 
 
 @login_required
+@check_terms_accepted
 def create_survey(request):
     """Create a new clan"""
     if request.method == 'POST':
@@ -2275,6 +2312,7 @@ def delete_question(request, survey_id, question_id):
 
 
 @login_required
+@check_terms_accepted
 def surveyer_dashboard(request):
     """Surveyer dashboard for clan management"""
     # Import clan models (try to avoid circular imports)
@@ -2362,6 +2400,7 @@ def surveyer_dashboard(request):
 
 
 @login_required
+@check_terms_accepted
 def survey_list(request):
     """Display list of available surveys for data collection"""
     # Show all active surveys (clans) for data collection, including user's own clans

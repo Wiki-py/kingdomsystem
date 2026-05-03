@@ -5,7 +5,9 @@ from . import concurrent_utils
 app_name = 'surveys'
 
 urlpatterns = [
-    path('', views.survey_list, name='survey_list'),
+    path('', views.welcome_view, name='welcome'),
+    path('welcome/', views.welcome_view, name='welcome'),
+    path('surveys/', views.survey_list, name='survey_list'),
     path('dashboard/', views.surveyer_dashboard, name='surveyer_dashboard'),
     path('create/', views.create_survey, name='create_survey'),
     path('create-sub-clan/<int:clan_id>/', views.create_sub_clan, name='create_sub_clan'),

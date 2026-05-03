@@ -1,0 +1,252 @@
+{% extends 'surveys/base.html' %}
+{% load static %}
+
+{% block title %}Welcome - OBB Baseline Survey System{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-md-10 col-lg-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-gradient text-white text-center py-4">
+                    <h3 class="mb-0">
+                        <i class="bi bi-clipboard-data me-2"></i>
+                        OBB Baseline Survey System
+                    </h3>
+                    <p class="mb-0 mt-2">OBB Research Team (OBBRT) Initiative</p>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <h5 class="alert-heading">
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    Cultural Transformation Initiative
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title text-primary">
+                                        <i class="bi bi-globe me-2"></i>
+                                        Background & Context
+                                    </h6>
+                                    <p class="card-text">
+                                        Cultural transformation is rapidly re-shaping our global economy, permeating every clan and aspects of daily life – changing the way we learn, work, trade, socialize, and access public and private services and information.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title text-primary">
+                                        <i class="bi bi-people me-2"></i>
+                                        OBB Research Team (OBBRT) Mission
+                                    </h6>
+                                    <p class="card-text">
+                                        In recognition of this trend, The OBB KINGDOM had to create an independent segment of OBB Research Team (OBBRT) with the objective of reaching over Twenty Five (25) clans, and 260,000 estimated population underserved in OBB communities.
+                                    </p>
+                                    <p class="card-text">
+                                        For the last one year, The Team have consulted with the Kingdom Executive Committees to ensure it comes out with comprehensive baseline/Survey tool to enable it reach over and answer all Clan/sub-clans/Ridge questions.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title text-primary">
+                                        <i class="bi bi-graph-up me-2"></i>
+                                        Program Benefits
+                                    </h6>
+                                    <p class="card-text">
+                                        The Program provides a catalytic blend of data collection tools, skilling, and networks to bring opportunities in the OBB closer to young people, women, and small businesses in hard-to-reach OBB communities.
+                                    </p>
+                                    <p class="card-text">
+                                        Together, we are leveraging shared Cultural infrastructure and partnerships to enable increased access to essential services, products, market, funding, and employment in this burgeoning OBB and Uganda at large.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card border-success">
+                                <div class="card-body">
+                                    <h6 class="card-title text-success">
+                                        <i class="bi bi-bullseye me-2"></i>
+                                        Survey Objectives
+                                    </h6>
+                                    <ul class="card-text">
+                                        <li>Reach over 25 clans and 260,000 population</li>
+                                        <li>Comprehensive baseline data collection</li>
+                                        <li>Answer Clan/Sub-clan/Ridge specific questions</li>
+                                        <li>Enable data-driven decision making</li>
+                                        <li>Support cultural transformation initiatives</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-warning">
+                                <h6 class="alert-heading">
+                                    <i class="bi bi-exclamation-triangle me-2"></i>
+                                    Terms of Use & Data Privacy
+                                </h6>
+                                <p class="mb-2">
+                                    By proceeding with this survey, you acknowledge that:
+                                </p>
+                                <ul class="mb-0">
+                                    <li>The data collected will be used for research and development purposes</li>
+                                    <li>Your responses will help improve services for OBB communities</li>
+                                    <li>Information will be handled according to data protection guidelines</li>
+                                    <li>You are participating voluntarily and can withdraw at any time</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <form method="post" id="welcome-form">
+                                {% csrf_token %}
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="terms-checkbox" required>
+                                    <label class="form-check-label" for="terms-checkbox">
+                                        <strong>I have read and understand the OBB Research Team mission, objectives, and terms of use. I agree to participate in this baseline survey voluntarily.</strong>
+                                    </label>
+                                </div>
+                                
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <button type="submit" class="btn btn-primary btn-lg" id="continue-btn" disabled>
+                                        <i class="bi bi-arrow-right-circle me-2"></i>
+                                        Continue to Survey System
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center text-muted py-3">
+                    <small>
+                        <i class="bi bi-shield-check me-1"></i>
+                        Secured Survey Platform | OBB Research Team © 2026
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkbox = document.getElementById('terms-checkbox');
+    const continueBtn = document.getElementById('continue-btn');
+    
+    checkbox.addEventListener('change', function() {
+        continueBtn.disabled = !this.checked;
+        if (this.checked) {
+            continueBtn.classList.remove('btn-secondary');
+            continueBtn.classList.add('btn-primary');
+        } else {
+            continueBtn.classList.remove('btn-primary');
+            continueBtn.classList.add('btn-secondary');
+        }
+    });
+});
+</script>
+
+<style>
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+.bg-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.card-header {
+    border-bottom: none;
+}
+
+.form-check-input:checked {
+    background-color: #667eea;
+    border-color: #667eea;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary:disabled {
+    background: #6c757d;
+    opacity: 0.6;
+}
+
+.alert {
+    border: none;
+    border-radius: 10px;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    color: #1565c0;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    color: #e65100;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+    color: #2e7d32;
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.card.border-success {
+    border-left: 4px solid #28a745 !important;
+}
+
+.card.border-0.bg-light {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+</style>
+{% endblock %}

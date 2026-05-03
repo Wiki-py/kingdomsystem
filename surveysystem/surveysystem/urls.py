@@ -21,10 +21,9 @@ from surveys.views import RoleBasedLoginView
 from surveys.admin import super_admin_site
 
 urlpatterns = [
-    path('', RoleBasedLoginView.as_view(template_name='registration/login.html'), name='home'),
+    path('', include('surveys.urls')),  # Welcome screen is now the home page
     path('admin/', super_admin_site.urls),  # Only superusers can access Django admin
-    path('surveys/', include('surveys.urls')),
     path('admin-dashboard/', include('surveys.admin_urls')),
     path('accounts/login/', RoleBasedLoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('accounts/logout/', auth_views.LogoutView.as_view(next_page='surveys:survey_list', template_name='registration/logged_out.html'), name='logout'),
+    path('accounts/logout/', auth_views.LogoutView.as_view(next_page='surveys:welcome', template_name='registration/logged_out.html'), name='logout'),
 ]
