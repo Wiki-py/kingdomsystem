@@ -4,50 +4,56 @@
 {% block title %}Login - OBB Baseline Survey System{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="custom-card p-4">
-            <div class="text-center mb-4">
-                <div class="mb-4 text-center">
-                    <img src="{% static 'surveys/logo/obblogo.png' %}" alt="OBB Logo" height="60" class="mb-3">
-                    <h1 class="text-gradient">Welcome to OBB Baseline Survey System</h1>
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="custom-card p-3 p-md-4">
+                <div class="text-center mb-4">
+                    <div class="mb-3 mb-md-4 text-center">
+                        <img src="{% static 'surveys/logo/obblogo.png' %}" alt="OBB Logo" height="50" height-md="60" class="mb-2 mb-md-3">
+                        <h1 class="text-gradient h3 h-md-2">Welcome to OBB Survey</h1>
+                        <p class="text-muted small">Sign in to access your survey system</p>
+                    </div>
                 </div>
-                <p class="text-muted">Sign in to access your survey system based on your role.</p>
-            </div>
-            
                 
-    <form method="post" class="mt-4">
-            {% csrf_token %}
-            
-            {% if form.errors %}
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-triangle me-2"></i>
-                    Your username and password didn't match. Please try again.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            {% endif %}
-            
-            <div class="mb-3">
-                <label for="{{ form.username.id_for_label }}" class="form-label">
-                    <i class="bi bi-person me-1"></i>Username
-                </label>
-                <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" 
-                       class="form-control form-control-lg" placeholder="Enter your username" required>
-            </div>
-            
-            <div class="mb-4">
-                <label for="{{ form.password.id_for_label }}" class="form-label">
-                    <i class="bi bi-lock me-1"></i>Password
-                </label>
-                <input type="password" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" 
-                       class="form-control form-control-lg" placeholder="Enter your password" required>
-            </div>
-            
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-4">
-                <button type="submit" class="btn btn-primary btn-lg">
-                    <i class="bi bi-box-arrow-in-right me-1"></i>Login
-                </button>
-                <a href="{% url 'surveys:survey_list' %}" class="btn btn-outline-secondary btn-lg">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% if form.errors %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <span class="d-none d-md-inline">Your username and password didn't match. Please try again.</span>
+                            <span class="d-md-none">Invalid credentials. Try again.</span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.username.id_for_label }}" class="form-label">
+                            <i class="bi bi-person me-1"></i>Username
+                        </label>
+                        <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" 
+                               class="form-control form-control-lg" placeholder="Enter your username" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="{{ form.password.id_for_label }}" class="form-label">
+                            <i class="bi bi-lock me-1"></i>Password
+                        </label>
+                        <input type="password" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" 
+                               class="form-control form-control-lg" placeholder="Enter your password" required>
+                    </div>
+                    
+                    <div class="d-grid gap-2 mb-3">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="bi bi-box-arrow-in-right me-1"></i>
+                            <span class="d-none d-md-inline">Login</span>
+                            <span class="d-md-none">Sign In</span>
+                        </button>
+                    </div>
+                    
+                    <div class="text-center">
+                        <a href="{% url 'surveys:survey_list' %}" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-x-circle me-1"></i>Cancel
                 </a>
             </div>
