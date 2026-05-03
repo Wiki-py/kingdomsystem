@@ -74,21 +74,47 @@ WSGI_APPLICATION = 'surveysystem.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-try:
-    import dj_database_url
-    DATABASES = {
-        'default': dj_database_url.config(
-            default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
-            conn_max_age=600
-        )
-    }
-except ImportError:
-    DATABASES = {
-        'default': {
+# Database safety configuration
+import dj_database_url
+
+# Production database (Render PostgreSQL) or development (SQLite)
+DATABASES = {
+    'default': dj_database_url.config(
+        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
+        conn_max_age=600,
+        ssl_require='prefer'  # Use SSL for production databases
+    )
+}
+
+# Database safety checks
+if DEBUG:
+    # Development: Use SQLite locally
+    if 'DATABASE_URL' not in os.environ:
+        DATABASES['default'] = {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
-    }
+        print("WARNING: Using local SQLite database for development")
+else:
+    # Production: Must use PostgreSQL
+    if 'DATABASE_URL' not in os.environ:
+        raise ValueError("DATABASE_URL environment variable must be set in production")
+    
+    # Ensure we're not using SQLite in production
+    if 'sqlite' in DATABASES['default']['ENGINE']:
+        raise ValueError("SQLite database detected in production. Use PostgreSQL instead.")
+    
+    print("INFO: Using production PostgreSQL database")
+
+# Additional database safety settings
+DATABASES['default']['OPTIONS'] = {
+    'connect_timeout': 60,
+    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+}
+
+# Disable database migrations in production if needed
+# Uncomment the following line if you want to prevent automatic migrations
+# MIGRATION_MODULES = {'default': None}
 
 
 # Password validation
@@ -127,8 +153,18 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Include multiple static directories for better organization
 STATICFILES_DIRS = [
     BASE_DIR / 'surveysystem/surveys/static',
+    BASE_DIR / 'surveys/static',  # Add this path for deployment
+    BASE_DIR / 'static',  # Add root static directory
+]
+
+# Static files finders for better static file resolution
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
 LOGIN_REDIRECT_URL = '/surveys/'

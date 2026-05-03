@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Survey System{% endblock %}</title>
     
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="{% static 'surveys/manifest.json' %}">
+    <meta name="theme-color" content="#dc2626">
+    <meta name="description" content="OBB Kingdom baseline survey system for data collection and analysis">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="OBB Survey">
+    
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -157,12 +165,12 @@
                                     <i class="bi bi-speedometer2 me-1"></i>Admin Dashboard
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/">
-                                    <i class="bi bi-gear me-1"></i>Django Admin
-                                </a>
-                            </li>
                         {% endif %}
+                        <li class="nav-item">
+                            <button class="btn btn-sm btn-outline-light ms-2" onclick="showInstallInstructions()" title="Install App">
+                                <i class="bi bi-download me-1"></i>Install
+                            </button>
+                        </li>
                         <li class="nav-item">
                             <form method="post" action="{% url 'logout' %}" style="display: inline;">
                                 {% csrf_token %}
@@ -212,6 +220,147 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('{% static "surveys/sw.js" %}')
+                    .then(registration => {
+                        console.log('Service Worker registered successfully:', registration);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+        
+        // PWA Install Prompt
+        let deferredPrompt;
+        let installBannerShown = false;
+        
+        // Check if app is already installed
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+            console.log('App is already installed');
+        } else {
+            // Show manual install button after a delay
+            setTimeout(() => {
+                if (!installBannerShown) {
+                    showManualInstallButton();
+                }
+            }, 3000);
+        }
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            console.log('beforeinstallprompt event fired');
+            
+            // Show install banner
+            showInstallBanner();
+        });
+        
+        function showInstallBanner() {
+            if (installBannerShown) return;
+            installBannerShown = true;
+            
+            const installBanner = document.createElement('div');
+            installBanner.id = 'pwa-install-banner';
+            installBanner.className = 'alert alert-info alert-dismissible fade show position-fixed bottom-0 start-0 m-3';
+            installBanner.style.zIndex = '1050';
+            installBanner.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-download me-2"></i>
+                    <span>Install OBB Survey System for offline access!</span>
+                    <button class="btn btn-sm btn-primary ms-3" onclick="installApp()">Install</button>
+                    <button type="button" class="btn-close ms-2" onclick="dismissInstallBanner()"></button>
+                </div>
+            `;
+            document.body.appendChild(installBanner);
+        }
+        
+        function showManualInstallButton() {
+            if (installBannerShown) return;
+            
+            const installButton = document.createElement('div');
+            installButton.id = 'pwa-install-button';
+            installButton.className = 'position-fixed bottom-0 end-0 m-3';
+            installButton.style.zIndex = '1050';
+            installButton.innerHTML = `
+                <button class="btn btn-primary btn-sm rounded-circle shadow" onclick="showInstallInstructions()" title="Install App">
+                    <i class="bi bi-download"></i>
+                </button>
+            `;
+            document.body.appendChild(installButton);
+        }
+        
+        function showInstallInstructions() {
+            const instructions = document.createElement('div');
+            instructions.className = 'modal fade show';
+            instructions.style.display = 'block';
+            instructions.style.backgroundColor = 'rgba(0,0,0,0.5)';
+            instructions.innerHTML = `
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Install OBB Survey System</h5>
+                            <button type="button" class="btn-close" onclick="closeInstallInstructions()"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Chrome/Edge:</strong> Click the install icon in the address bar or use the menu (⋮) → "Install OBB Survey System"</p>
+                            <p><strong>Firefox:</strong> Use the menu (≡) → "Install OBB Survey System"</p>
+                            <p><strong>Safari (iOS):</strong> Tap Share button → "Add to Home Screen"</p>
+                            <p><strong>Chrome (Android):</strong> Tap menu (⋮) → "Add to Home Screen" or "Install app"</p>
+                            <hr>
+                            <p><strong>Benefits:</strong></p>
+                            <ul>
+                                <li>Offline access</li>
+                                <li>Faster loading</li>
+                                <li>App-like experience</li>
+                                <li>No browser bars</li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="closeInstallInstructions()">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="installApp()">Try Install</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(instructions);
+        }
+        
+        function closeInstallInstructions() {
+            const modal = document.querySelector('.modal.show');
+            if (modal) modal.remove();
+        }
+        
+        function dismissInstallBanner() {
+            const banner = document.getElementById('pwa-install-banner');
+            if (banner) banner.remove();
+        }
+        
+        function installApp() {
+            closeInstallInstructions();
+            
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                        dismissInstallBanner();
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                // Fallback instructions
+                showInstallInstructions();
+            }
+        }
+    </script>
+    
     {% block extra_js %}{% endblock %}
 </body>
 </html>
