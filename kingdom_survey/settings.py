@@ -89,11 +89,25 @@ WSGI_APPLICATION = 'kingdom_survey.wsgi.application'
 
 import dj_database_url
 
-if os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('DATABASE_URL'):
-    # Railway PostgreSQL database
-    DATABASES = {
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-    }
+# Handle Railway PostgreSQL database
+database_url = os.environ.get('DATABASE_URL')
+if database_url and database_url.strip():
+    try:
+        # Convert bytes to string if needed and parse
+        if isinstance(database_url, bytes):
+            database_url = database_url.decode('utf-8')
+        DATABASES = {
+            'default': dj_database_url.parse(database_url)
+        }
+    except (ValueError, TypeError) as e:
+        # Fallback to SQLite if DATABASE_URL is invalid
+        print(f"Warning: Invalid DATABASE_URL '{database_url}': {e}")
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
 else:
     # Local SQLite database
     DATABASES = {
